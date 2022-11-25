@@ -15,10 +15,11 @@ def sql_request_by_title(title):
     with sqlite3.connect('netflix.db') as connection:
         cursor = connection.cursor()
 
-        query = ("SELECT title, country, MAX(release_year), listed_in, description "
+        query = ("SELECT title, country, release_year, listed_in, description "
                  "FROM netflix "
-                 f"WHERE title = '{title}' "
-                 "AND type = 'Movie'")
+                 f"WHERE title LIKE '%{title}%' "
+                 "AND type = 'Movie' "
+                 "ORDER BY release_year DESC")
 
         executed_query = cursor.execute(query)
         data = executed_query.fetchone()
@@ -171,9 +172,10 @@ def sql_test_request():
 
 
 if __name__ == '__main__':
-        result = sql_request_by_actors('Rose McIver', 'Ben Lamb')
+        #result = sql_request_by_actors('Rose McIver', 'Ben Lamb')
         #result = SQL_request_by_multi_parameters('Movie', 1960, 'Comedies')
-        print(result)
-    #for item in result:
-    #    print(item)
+        result = sql_request_by_title('love')
+        #print(result)
+        for item in result:
+            print(item)
 """
